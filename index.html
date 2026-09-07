@@ -51,6 +51,11 @@
   .box-title{font-size:14px;font-weight:700;color:var(--sf-text);}
   .box-sub{font-size:11px;color:var(--sf-text-3);margin-top:2px;}
 
+  /* single central change date row at the top of each box */
+  .datebar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 14px;border-bottom:1px solid var(--sf-line);background:#fafafa;}
+  .datebar .dl{font-size:11px;font-weight:700;color:var(--sf-label);text-transform:uppercase;letter-spacing:.03em;}
+  .datebar .dv{font-size:14px;font-weight:700;color:var(--sf-text);font-variant-numeric:tabular-nums;}
+
   table.pref{width:100%;border-collapse:collapse;font-size:13px;}
   table.pref thead th{position:sticky;top:0;background:var(--sf-th);text-align:left;font-weight:600;color:var(--sf-text-3);padding:8px 14px;border-bottom:1px solid var(--sf-border);font-size:11px;text-transform:uppercase;letter-spacing:.03em;}
   table.pref th.cbc{width:38px;padding-left:14px;}
@@ -134,11 +139,15 @@
         <div class="box">
           <div class="box-head">
             <div class="box-title">Product Interests</div>
-            <div class="box-sub"><span id="cnt-pi"></span> · change date <b>14.01.2026</b></div>
+            <div class="box-sub"><span id="cnt-pi"></span></div>
+          </div>
+          <div class="datebar">
+            <span class="dl">Interest change date</span>
+            <span class="dv">14.01.2026</span>
           </div>
           <div class="scroll">
             <table class="pref">
-              <thead><tr><th class="cbc"></th><th>Preference</th><th class="dtc">Last Changed Date</th></tr></thead>
+              <thead><tr><th class="cbc"></th><th>Preference</th></tr></thead>
               <tbody id="tb-pi"></tbody>
             </table>
           </div>
@@ -148,11 +157,15 @@
         <div class="box">
           <div class="box-head">
             <div class="box-title">Focus Applications</div>
-            <div class="box-sub"><span id="cnt-fa"></span> · change date <b>03.02.2026</b></div>
+            <div class="box-sub"><span id="cnt-fa"></span></div>
+          </div>
+          <div class="datebar">
+            <span class="dl">Application change date</span>
+            <span class="dv">03.02.2026</span>
           </div>
           <div class="scroll">
             <table class="pref">
-              <thead><tr><th class="cbc"></th><th>Preference</th><th class="dtc">Last Changed Date</th></tr></thead>
+              <thead><tr><th class="cbc"></th><th>Preference</th></tr></thead>
               <tbody id="tb-fa"></tbody>
             </table>
           </div>
@@ -209,22 +222,20 @@ var FA = [
 ];
 
 var TICK = '<svg viewBox="0 0 24 24"><path d="M9 16.2l-3.5-3.5 1.4-1.4L9 13.4l7.1-7.1 1.4 1.4z"/></svg>';
-function rows(list, tbodyId, cntId, date){
+function rows(list, tbodyId, cntId){
   var tb = document.getElementById(tbodyId), on = 0;
   list.forEach(function(r){
     var tr = document.createElement("tr");
-    var d = r[1] ? date : "";
     tr.innerHTML =
       '<td class="cbc"><span class="cbx' + (r[1] ? " on" : "") + '">' + TICK + '</span></td>' +
-      '<td>' + r[0] + '</td>' +
-      '<td class="dt' + (d ? "" : " empty") + '">' + (d || "—") + '</td>';
+      '<td>' + r[0] + '</td>';
     tb.appendChild(tr);
     if(r[1]) on++;
   });
   document.getElementById(cntId).textContent = on + " of " + list.length + " selected";
 }
-rows(PI, "tb-pi", "cnt-pi", PI_DATE);
-rows(FA, "tb-fa", "cnt-fa", FA_DATE);
+rows(PI, "tb-pi", "cnt-pi");
+rows(FA, "tb-fa", "cnt-fa");
 
 document.getElementById("tabs").addEventListener("click", function(e){
   var t = e.target.closest(".tab"); if(!t) return;
